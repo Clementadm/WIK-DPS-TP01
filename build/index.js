@@ -5,17 +5,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // console.log('Hello world')
 const express_1 = __importDefault(require("express"));
+const dotenv = require("dotenv");
 const app = (0, express_1.default)();
-let PING_LISTEN_PORT = 3333;
+// variable d'environnement
+dotenv.config();
+const myPort = process.env.PING_LISTEN_PORT;
+//parse every url
 app.get("*", (req, res) => {
-    console.log(res.status);
+    // check if ping return headers else no data (error 404)
     if (req.url == "/ping") {
-        console.log(1);
-        return res.json(JSON.stringify(req.headers));
+        return res.json(req.headers);
     }
     res.status(404).end();
-    console.log(2);
 });
-app.listen(3333, () => {
-    console.log("The application is listening on port 3333!");
+// run the app on the env variable
+app.listen(myPort, () => {
+    console.log("The application is listening on the env port!");
 });
